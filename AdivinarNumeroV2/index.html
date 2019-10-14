@@ -1,0 +1,132 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>JavaScript</title>
+        <script type="text/javascript">
+            //adivina un numero entre 1 y 10, cada vez que se ingresa un numero y no le atina
+            //se le va restando una oportunidad, caliente menos de un numero, entre 2 y 4 es tibio
+            //y mas de 5 es frio, tiene tres oportunidades
+
+            //metodo math.random para numero aleatorio y quede entre 1 y 10, imprimirlo en la consola
+            //cambiar el while por el do-while
+
+            var resultados = [];
+            var maxima_puntuacion = [];
+            function comenzar() {
+                //...Empieza el Juego
+                var gameOver = false;
+                while (!gameOver) {
+                    alert('Tienes tres oportunidades de adivinar');
+                    var oportunidad = 0;
+                    if (oportunidad === 0) {
+                        var random = Math.floor((Math.random() * 10) + 1);
+                    }
+                    console.log('Numero random: ' + random);
+                    do {
+                        var intento = prompt('Ingresa un numero del 1 al 10');
+                        intento = parseInt(intento);
+                        if (isNaN(intento)) {
+                            alert('Ingresa un numero');
+                        } else {
+                            var diferencia = Math.abs(random - intento);
+                            var puntaje;
+                            if (diferencia === 0) {
+                                console.log('Intento del Jugador: ' + intento);
+//                                puntaje = parseInt(puntaje);
+                                switch (oportunidad) {
+                                    case 0:
+                                        alert('Ganaste 5 puntos');
+                                        puntaje = 5;
+                                        break;
+                                    case 1:
+                                        alert('Ganaste 3 puntos');
+                                        puntaje = 3;
+                                        break;
+                                    case 2:
+                                        alert('Ganaste 1 punto');
+                                        puntaje = 1;
+                                        break;
+                                    default:
+                                        alert('No ganaste puntos');
+                                        puntaje = 0;
+                                        break;
+                                }
+                                resultados.push(puntaje);
+                                oportunidad = 2;
+                            } else if (diferencia === 1) {
+                                console.log('Intento del Jugador: ' + intento);
+                                alert('Caliente');
+                            } else if (diferencia <= 4 && diferencia >= 2) {
+                                console.log('Intento del Jugador: ' + intento);
+                                alert('Tibio');
+                            } else if (diferencia >= 5 && diferencia <= 10) {
+                                console.log('Intento del Jugador: ' + intento);
+                                alert('Frio');
+                            } else if (diferencia > 10 || diferencia < 0) {
+                                console.log('Intento del Jugador: ' + intento);
+                                alert('Ingresa un numero del 1 al 10, perdiste una oportunidad :(');
+                            }
+                            oportunidad++;
+//                            console.log('Oportunidad:   ' + oportunidad);
+                        }
+                        if (oportunidad === 3 && diferencia !== 0) {
+                            alert('Perdiste');
+                            gameOver = true;
+                        }
+                    } while (oportunidad < 3);
+                }
+//                resultados.push(puntaje);
+                imprimir_resultados(resultados);
+                var max = maximo(maxima_puntuacion);
+                imprimir_maximo(max);
+                vaciar_resultados(resultados);
+            }
+
+            function imprimir_resultados(resultados) {
+                var div_resultados = document.getElementById("resultados");
+                var puntaje = suma_puntaje(resultados);
+                var cadena = '<ul>';
+                for (var i = 0; i < resultados.length; i++) {
+                    cadena += '<li>' + resultados[i] + '</li>';
+                }
+                cadena += '</ul>';
+                cadena += '<h2>Puntaje: ' + puntaje + '</h2>';
+                div_resultados.innerHTML = cadena;
+            }
+
+            function suma_puntaje(resultados) {
+                var suma_puntaje = 0;
+                for (var i = 0; i < resultados.length; i++) {
+                    suma_puntaje += resultados[i];
+                }
+                maxima_puntuacion.push(suma_puntaje);
+                return suma_puntaje;
+            }
+
+            function maximo(puntuacion) {
+                return max = Math.max.apply(null, puntuacion);
+            }
+
+            function imprimir_maximo(puntuacion) {
+                var div_resultados = document.getElementById("maximo");
+                var cadena = '<h2>Puntaje Maximo: ' + puntuacion + '</h2>';
+                div_resultados.innerHTML = cadena;
+            }
+
+            function vaciar_resultados(resultados) {
+                for (var i = resultados.length; i > 0; i--) {
+                    resultados.pop();
+                }
+            }
+//            //funcion para recorrer todos los resultados
+//            var max = maximo(resultados);
+//            imprimir_maximo();
+
+        </script>
+    </head>
+    <body>
+        <div id="resultados"></div>
+        <button onclick="comenzar()">Comenzar</button>
+        <div id="maximo" style="background-color: yellow;"></div>
+    </body>
+</html>
